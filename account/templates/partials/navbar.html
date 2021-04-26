@@ -1,0 +1,95 @@
+{% load notifications %}
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-light" style="background-color: #26A69A;">
+  <!-- Container wrapper -->
+  <div class="container-fluid">
+    <!-- Navbar brand -->
+    <span class="navbar-brand mb-0 h1">Mark-It</span>
+    <!-- Toggle button -->
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-mdb-toggle="collapse"
+      data-mdb-target="#navbarSupportedContent"
+      aria-controls="navbarSupportedContent"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
+    >
+      <i class="fas fa-bars"></i>
+    </button>
+
+    <!-- Collapsible wrapper -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <!-- Left links -->
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a class="nav-link" aria-current="page" href="{% url 'actions:dashboard' %}">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'images:image_list' %}">Images</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'account:user_list' %}">People</a>
+        </li>
+      </ul>
+      <!-- Left links -->
+            <div class="d-flex">
+        {% if request.user.is_authenticated %}
+          <!-- Navbar dropdown -->
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li class="nav-item dropdown">
+              <a href=""
+                class="nav-link dropdown-toggle"
+                href="#"
+                id="navbarDropdown2"
+                role="button"
+                data-mdb-toggle="dropdown"
+                aria-expanded="false"
+              >
+                <i class="fas fa-bell"></i>
+                <span class="badge rounded-pill badge-notification bg-danger">{% notification_number request %}</span>
+              </a>
+              <!-- Dropdown menu -->
+              <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown2" style="overflow-y:auto; max-height:80vh">
+                {% show_notifications request %}
+              </ul>
+            </li>
+            <!-- Navbar dropdown -->
+            <li class="nav-item dropdown">
+              <a
+                class="nav-link dropdown-toggle"
+                href="#"
+                id="navbarDropdown"
+                role="button"
+                data-mdb-toggle="dropdown"
+                aria-expanded="false"
+              >
+                <strong>{{request.user.first_name}}</strong>
+              </a>
+              <!-- Dropdown menu -->
+              <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                <li><a class="dropdown-item" href="{% url 'account:profile' %}">Profile</a></li>
+                <li><a class="dropdown-item" href="{% url 'account:password_change' %}">Change Password</a></li>
+                <li><hr class="dropdown-divider" /></li>
+                <li>
+                  <form action="{% url 'account:logout' %}">
+                    <button type="submit" role="submit" class="dropdown-item">
+                      Logout
+                    </button>
+                  </form>
+                </li>
+              </ul>
+            </li>
+          </ul>
+        {% else %}
+          <a role="button" href="{% url 'account:login' %}" class="btn btn-outline-dark">
+            Login
+          </a>
+        {% endif %}
+      </div>
+    </div>
+    <!-- Collapsible wrapper -->
+  </div>
+  <!-- Container wrapper -->
+</nav>
+<!-- Navbar -->

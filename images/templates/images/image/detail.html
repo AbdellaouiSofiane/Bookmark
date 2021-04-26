@@ -1,0 +1,86 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+<div class="card mb-3" >
+  <div class="row g-0">
+    <div class="col-md-4">
+      <img
+        src="{{ image.image.url }}"
+        alt="..."
+        class="img-fluid"
+      />
+    </div>
+    <div class="col-md-8">
+      <div class="card-body">
+        <h5 class="card-title row mb-0">
+        	<div class="col">
+        		{{ image.title }}
+        	</div>
+        	<span class="col d-flex justify-content-end">
+        		<button 
+                    id="button-like"
+                    class="btn btn-outline-success btn-rounded"
+                    data-id="{{ image.id }}"
+                    >{% if request.user in image.users_like.all %}Unlike{% else %}Like{% endif %}</button>
+        	</span>
+        </h5>
+        <span class="card-subtitle text-muted small">
+        	By <a class="text-success" href="{% url 'account:user_detail' image.user.username %}">{{ image.user }}</a> 
+        	<span class="fas fa-clock fa-xs"></span> 
+        	{{ image.created|timesince}}
+        </span> 
+        <br>
+
+        <!-- Number of likes -->
+        <span class="small text-muted">
+        	<span id='total-likes'> {{ image.users_like.count }} </span>
+            <i class="fab fa-gratipay mx-1 text-danger"></i>
+        </span>
+
+        <!-- Number of views -->
+        <span class="small text-muted">
+        	<span>{{ total_views }}</span> 
+            <i class="fas fa-eye mx-1 text-primary"></i>
+        </span>
+        <hr>
+        <p class="card-text mt-3">
+     		{{ image.description }}
+
+    	</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock content %}
+
+
+{% block domready %}
+    {% if request.user.is_authenticated %}
+        $('#button-like').click(function(){
+            $.post('{% url 'images:image_like' %}', {
+                id: $(this).data('id')
+            }, function( res ) {
+                var previous_action = $('#button-like').text();
+                $('#button-like').text(previous_action == 'Like' ? 'Unlike' : 'Like');
+                $('#total-likes').text(res.total_likes);
+            });
+        });
+    {% else %}
+        $('#button-like').click(function(){
+            var msg = `
+                <div class="text-center alert alert-warning alert-dismissible fade show" role="alert">
+                    You have te be logged in to like this image.
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+                    </button>
+                </div>`;
+            $('#messages').append(msg);
+        });
+    {% endif %}
+
+   
+   
+{% endblock domready %}
+
+

@@ -1,0 +1,40 @@
+
+{% for action in actions %}
+{% with user=action.user profile=action.user.profile %}
+
+<li class="dropdown-item">
+<div class="d-flex">
+	<a href="{% url 'account:user_detail' user.username %}">
+		<img 
+			src="{{ user.profile.photo.url }}" 
+			alt="{{ user.get_full_name }}"
+			class="rounded-circle mx-1"
+			style="width:50px; height: 50px">
+	</a>
+	{% if action.target %}
+		{% with target=action.target %}
+			{% if target.image %}
+				<a href="{{ target.get_absolute_url }}">
+					<img src="{{ target.image.url }}" class="rounded-circle" style="width:50px;height: 50px">
+				</a>
+			{% endif %}
+		{% endwith %}
+	{% endif %}
+	<span class="small mx-2 text-muted">
+		<a href="{% url 'account:user_detail' user.username %}" class="text-success">
+			{{ user.first_name }}
+		</a>
+		{{ action.verb }}
+		{% if action.target %}
+			{% with target=action.target %}
+				<a href="{{ target.get_absolute_url }}" class="text-success">{{ target }}</a>
+			{% endwith %}
+		{% endif %}
+		<br>
+		<span class="text-muted">{{ action.created|timesince }} ago</span>
+	</span>
+</div>
+</li>
+<li><hr class="dropdown-divider" /></li>
+{% endwith %}
+{% endfor %}

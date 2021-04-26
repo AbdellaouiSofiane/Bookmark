@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+
+
+{% block content %}
+
+<h1>Bookmark an image</h1>
+<p>
+	Drag the following button to your bookmarks toolbar to bookmark
+	images from other websites → 
+	<a type="button" href="javascript:{% include 'bookmarklet_launcher.js' %}" class="btn btn-success">
+		Bookmark it
+	</a>
+</p>
+	
+
+
+{% endblock content %}

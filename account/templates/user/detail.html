@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+	
+	<div class="container text-center">
+		<img src="{{ user.profile.photo.url }}" class="rounded-circle" style="width:100px">
+		<br>
+		<h5 class="mt-2">
+			{{ user.get_full_name }}
+		</h5>
+		<div class="text-muted mt-0">
+			<span>
+				Followed by <span id='total-followers' class="badge rounded-pill bg-dark">{{ user.followers.count }}</span> 
+			</span> -
+			<span>
+				Following <span class="badge rounded-pill bg-dark"> {{ user.following.count }}</span> 
+			</span> -
+			<span>
+				Publications <span class="badge rounded-pill bg-dark">{{ user.images_created.count }}</span>
+			</span>
+		</div>
+		<button id="btn-follow" class="btn btn-outline-dark mt-2" data-id="{{user.id}}">{% if request.user in user.followers.all %}Unfollow{% else %}Follow{% endif %}</button>
+		<hr>
+		<div id="image-list" class="row row-cols-1 row-cols-md-3 g-3 mt-5">
+			{% for image in user.images_created.all %}
+				<div class="col">
+					<div class="card h-100 text-center border-bottom border-success">
+						<div class="bg-image hover-overlay ripple" data-mdb-ripple-color="light">
+					  	<img
+					    	src="{{ image.image.url }}"
+					    	class="card-img-top"
+					    	alt="..."
+					  	>
+					  	<a href="{{ image.get_absolute_url }}">
+							<div class="mask" style="background-color: rgba(251, 251, 251, 0.15)"></div>
+						</a>
+						</div>
+					  	<div class="card-body">
+					    	<h6 class="card-title">
+					    		<a href="{{ image.get_absolute_url }}" class="text-dark">
+					    			{{ image.title }}
+					    		</a>
+					    	</h6>
+					   
+						</div>
+					</div>
+				</div>
+			{% empty %}
+				<div>
+					<p>{{ user }} have no bookmarket image yet.</p>
+				</div>
+			{% endfor %}
+		</div>
+	</div>
+{% endblock content %}
+
+
+
+{% block domready %}
+
+	$('#btn-follow').click(function() {
+		$.post('{% url "account:follow" %}', {
+			id : $(this).data('id')
+		}, function(response) {
+			if (response.status == 'ok') {
+				var previous_action = $('#btn-follow').text();
+				var total_followers = parseInt($('#total-followers').text());
+            	$('#btn-follow').text(previous_action == 'Follow' ? 'Unfollow' : 'Follow');
+            	$('#total-followers').text(previous_action == 'Follow' ? total_followers + 1 : total_followers - 1);
+			}
+		});
+	});
+
+{% endblock domready %}
+

@@ -1,0 +1,29 @@
+{% load thumbnail %}
+
+{% for image in images %}
+<div class="col">
+	<div class="card h-100 text-center border-bottom border-success" style="max-width: 200px">
+		<div class="bg-image hover-overlay ripple" data-mdb-ripple-color="light">
+		{% thumbnail image.image 200x200 quality=100 crop="smart" as im %}
+	  	<img
+	    	src="{{ im.url }}"
+	    	class="card-img-top"
+	    	alt="..."
+	    	width="{{ im.width }}"
+	    	height="{{ im.height }}"
+	  	>
+	  	<a href="{{ image.get_absolute_url }}">
+				<div class="mask" style="background-color: rgba(251, 251, 251, 0.15)"></div>
+		</a>
+		</div>
+	  <div class="card-body">
+	    <h6 class="card-title">
+	    	<a href="{{ image.get_absolute_url }}" class="text-dark">
+	    		{{ image.title }}
+	    	</a>
+	    </h6>
+	   
+	  </div>
+	</div>
+</div>
+{% endfor %}

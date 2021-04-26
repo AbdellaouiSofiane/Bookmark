@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+	
+	<div class="container text-center">
+		<img src="{{ request.user.profile.photo.url }}" class="rounded-circle" style="width:100px">
+		<br>
+		<h5 class="mt-2">
+			{{ request.user.get_full_name }}
+			<a href="{% url 'account:edit_profile' %}">
+				<i class="fas fa-pen text-success mx-1"></i> 
+			</a>
+		</h5>
+		<div class="text-muted mt-0">
+			<span>
+				Followed by <span id='total-followers' class="badge rounded-pill bg-dark">{{ request.user.followers.count }}</span> 
+			</span> -
+			<span>
+				Following <span class="badge rounded-pill bg-dark"> {{ request.user.following.count }}</span> 
+			</span> -
+			<span>
+				Publications <span class="badge rounded-pill bg-dark">{{ request.user.images_created.count }}</span>
+			</span>
+		</div>
+		<hr>
+		<div id="image-list" class="row row-cols-1 row-cols-md-3 g-3 mt-5">
+			{% for image in user.images_created.all %}
+				<div class="col">
+					<div class="card h-100 text-center border-bottom border-success">
+						<div class="bg-image hover-overlay ripple" data-mdb-ripple-color="light">
+					  	<img
+					    	src="{{ image.image.url }}"
+					    	class="card-img-top"
+					    	alt="..."
+					  	>
+					  	<a href="{{ image.get_absolute_url }}">
+							<div class="mask" style="background-color: rgba(251, 251, 251, 0.15)"></div>
+						</a>
+						</div>
+					  	<div class="card-body">
+					    	<h6 class="card-title">
+					    		<a href="{{ image.get_absolute_url }}" class="text-dark">
+					    			{{ image.title }}
+					    		</a>
+					    	</h6>
+					   
+						</div>
+					</div>
+				</div>
+			{% empty %}
+				<div>
+					<p>You have no bookmarket image yet.</p>
+				</div>
+			{% endfor %}
+		</div>
+	</div>
+	
+
+
+
+{% endblock content %}

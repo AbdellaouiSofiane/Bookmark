@@ -1,0 +1,80 @@
+{% extends 'base.html' %}
+	    <h5 class="card-title">Sign In</h5>
+{% block content %}
+<div class="d-flex justify-content-center">
+	<!-- Card  -->
+	<div class="card w-50 text-center mt-5 border">
+	  <div class="card-header text-dark mt-1">
+	  	<h5>Sign in</h5>
+	  </div>
+	  <div class="card-body mt-2">
+	   		<!-- Login form -->
+	    	<form method="POST"> {% csrf_token %}
+	    		{% if form.errors %}
+		    		<div class="w-75 mx-auto text-danger border border-danger mb-3">
+		    			<p>
+		    				{{ form.non_field_errors }}
+		    			</p>
+		    		</div>
+	    		{% endif %}
+	    		<!-- Username -->
+	    		<div class="form-outline w-75 mx-auto mb-1">
+	    			<input 
+		    			type="text" 
+		    			name="username" 
+		    			autofocus autocapitalize="none" 
+		    			autocomplete="username" 
+		    			maxlength="150" 
+		    			required 
+		    			class="form-control"
+		    			id="id_username"
+	    			>
+	    			<label for="id_username" class="form-label">
+	    				Username
+	    			</label>
+	    		</div>
+	    		<!-- End username -->
+	    		<!-- Password -->
+	    		<div class="form-outline w-75 mx-auto mb-1">
+	    			<input 
+		    			type="password" 
+		    			name="password" 
+		    			autocomplete="current-password" 
+		    			required 
+		    			class="form-control"
+		    			id="id_password"
+	    			>
+	    			<label for="id_password" class="form-label">
+	    				Password
+	    			</label>
+	    		</div>
+	    		<!-- End Password -->
+	    		<div class="text-end w-75 mx-auto">
+	    			<a href="{% url 'account:password_reset' %}" class="small">
+	    				Forgot password ?
+	    			</a>	
+	    		</div>
+	    		<!-- Submit button -->
+	    		<button 
+	    			type="submit" 
+	    			class="btn btn-success  mt-2" 
+	    			style="background-color: #004D40;">
+	    				Sign in
+	    		</button>
+	    		<!-- End Submit button -->
+	    	</form>
+	  		<!-- End Login form -->
+	  </div>
+	  <div class="card-footer text-muted">
+	  	<p>
+	  		New to Mark-It ? 
+	  		<a href="{% url 'account:register' %}" class="mx-2">
+	  			Sign Up
+	  		</a>
+	  	</p>
+	  </div>
+	</div>
+	<!-- End Card -->
+</div>
+{% endblock content %}
+

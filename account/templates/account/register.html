@@ -1,0 +1,136 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+
+<div class="d-flex justify-content-center">
+	<!-- Card  -->
+	<div class="card w-50 mt-5 border">
+
+		<!-- Card header -->
+		<div class="card-header text-center text-dark mt-1">
+	  		<h5>Sign up</h5>
+	  	</div>
+	  	<!-- End Card title -->
+
+	  	<!-- Card body -->
+	  	<div class="card-body">
+	  		<!-- Register form -->
+			<form method="POST">{% csrf_token %}
+
+				<!-- Non field errors -->
+				{% if form.non_field_errors %}
+		    			<div class="w-75 mx-auto text-danger border border-danger mb-3">
+		    				<p>
+		    					{{ form.non_field_errors }}
+		    				</p>
+		    			</div>
+	    		{% endif %}
+	    		<!-- End non field errors -->
+
+	    		<!-- Username field -->
+				<div class="form-outline mb-2">
+		  			<input 
+		  				class="form-control" 
+		  				type="text" 
+		  				name="username" 
+		  				maxlength="150" 
+		  				autofocus 
+		  				required 
+		  				id="id_username"
+		  			> 
+		  			<label for="id_username" class="form-label">
+		  				Username
+		  			</label> 
+				</div>
+				<span class="small text-danger">
+					{{ form.username.errors }}
+				</span>
+				<!-- End username field -->
+
+
+				<!-- email field -->
+				<div class="form-outline mb-2">
+					<input 
+						class="form-control" 
+						type="email" 
+						name="email" 
+						required id="id_email"
+					>
+					<label for="id_email" class="form-label">
+						Email
+					</label> 
+				</div>
+				<span class="small text-danger">
+					{{ form.email.errors }}
+				</span>
+				<!-- End username field -->
+
+				<!-- password field -->
+				<div class="form-outline mb-2">
+					<input 
+						class="form-control" 
+						type="password" 
+						name="password1" 
+						autocomplete="new-password" 
+						required 
+						id="id_password1"
+					>
+					<label class="form-label" for="id_password1" >
+						Password
+					</label>  
+				</div>
+				<span class="small text-danger">
+					{{ form.password.errors }}
+				</span>
+				<!-- End password field -->
+			
+				
+				<!-- password2 field -->
+				<div class="form-outline mb-2">
+					<input 
+						class="form-control" 
+						type="password" 
+						name="password2" 
+						autocomplete="new-password" 
+						required 
+						id="id_password2"
+					>
+					<label class="form-label" for="id_password2" >
+						Password confirmation
+					</label>  
+				</div>
+				<span class="small text-danger">
+					{{ form.password2.errors }}
+				</span>
+				<!-- End password2 field -->
+
+				<!-- Submit button -->
+				<div class="d-flex justify-content-center">
+					<button 
+		    			type="submit" 
+		    			class="btn btn-success w-25 mt-2" 
+		    			style="background-color: #004D40;">
+		    				Register
+		    		</button>
+				</div>
+				<!-- End submit button -->
+			</form>
+		</div>
+
+		<!-- Card footer -->
+		<div class="card-footer text-muted d-flex justify-content-center">
+	  		<p>
+	  			Already have an account ? 
+	  			<a href="{% url 'account:login' %}" class="mx-2">
+	  				Sign in
+	  			</a>
+	  		</p>
+		</div>
+		<!-- End ecrd footer -->
+	</div>
+	<!-- End Card  -->
+</div>
+
+{% endblock content %}
+
